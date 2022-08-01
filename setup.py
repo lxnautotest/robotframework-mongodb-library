@@ -12,11 +12,11 @@ sys.path.insert(0, os.path.join('src', 'MongoDBLibrary'))
 from version import VERSION
 
 requirements = [
-    'tox>=3.0.0',
+    'tox~=3.25.1',
     'coverage',
-    'robotframework>=3.0',
-    'pymongo>=3.8.0',
-    'bson>=0.5.8'
+    'robotframework~=5.0',
+    'pymongo~=4.2.0',
+    # 'bson>=0.5.8'
 ]
 
 test_requirements = [
