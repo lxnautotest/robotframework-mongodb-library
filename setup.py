@@ -16,7 +16,7 @@ requirements = [
     'coverage',
     'robotframework~=5.0',
     'pymongo~=4.2.0',
-    'bson~=0.5.10'
+    # 'bson~=0.5.10' # removed due to: https://pymongo.readthedocs.io/en/stable/installation.html
 ]
 
 test_requirements = [
