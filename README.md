@@ -11,6 +11,11 @@ See LICENSE file for updated license information
 
 Install
 -------
+use the following line in your requirements.txt:
+git+https://github.com/lxnautotest/robotframework-mongodb-library.git
+
+OR 
+
 You can install by pulling down source and executing the following:
 
 '''

@@ -1,5 +1,5 @@
 import json
-from bson.objectid import ObjectId
+from pymongo import ObjectId
 from pymongo import ReturnDocument
 import logging
 

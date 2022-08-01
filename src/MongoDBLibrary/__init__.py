@@ -2,6 +2,7 @@ from .mongo_connection_manager import MongoConnectionManager
 from .mongoquery import MongoQuery
 from .version import VERSION
 
+_version_ = VERSION
 
 class MongoDBLibrary(MongoConnectionManager, MongoQuery):
     """
