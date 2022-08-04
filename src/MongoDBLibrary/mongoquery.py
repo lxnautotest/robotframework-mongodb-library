@@ -358,7 +358,7 @@ class MongoQuery(object):
         except TypeError:
             self._builtin.fail("Connection failed, please make sure you have run 'Connect To Mongodb' first.")
         coll = db['%s' % dbCollName]
-        allResults = coll.remove(recordJSON)
+        allResults = coll.delete_many(recordJSON)
         logging.debug("| ${allResults} | Remove MongoDB Records | %s | %s | %s |" % (dbName, dbCollName, recordJSON))
         return allResults
     
