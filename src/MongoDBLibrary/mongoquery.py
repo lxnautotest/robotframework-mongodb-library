@@ -378,4 +378,4 @@ class MongoQuery(object):
         coll = db['%s' % dbCollName]
         results = coll.aggregate(aggregate_cond)
         logging.debug("| ${results} | Aggregate MongoDB Records | %s | %s |" % (dbName, dbCollName))
-        return results
+        return list(results)
