@@ -379,3 +379,22 @@ class MongoQuery(object):
         results = coll.aggregate(aggregate_cond)
         logging.debug("| ${results} | Aggregate MongoDB Records | %s | %s |" % (dbName, dbCollName))
         return list(results)
+
+    def get_mongodb_collection_count_with_condition(self, dbName, dbCollName, conditionJSON):
+        """
+        Returns the number records for the collection specified.
+
+        Usage is:
+        | ${allResults} | Get MongoDB Collection Count | DBName | CollectionName |
+        | Log | ${allResults} |
+        """
+        dbName = str(dbName)
+        dbCollName = str(dbCollName)
+        try:
+            db = self._dbconnection['%s' % (dbName,)]
+        except TypeError:
+            self._builtin.fail("Connection failed, please make sure you have run 'Connect To Mongodb' first.")
+        coll = db['%s' % dbCollName]
+        count = coll.count(conditionJSON)
+        logging.debug("| ${allResults} | Get MongoDB Collection Count | %s | %s |" % (dbName, dbCollName))
+        return count
