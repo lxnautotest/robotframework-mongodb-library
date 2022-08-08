@@ -110,7 +110,7 @@ class MongoQuery(object):
         except TypeError:
             self._builtin.fail("Connection failed, please make sure you have run 'Connect To Mongodb' first.")
         coll = db['%s' % dbCollName]
-        count = coll.count()
+        count = coll.count_documents({})
         logging.debug("| ${allResults} | Get MongoDB Collection Count | %s | %s |" % (dbName, dbCollName))
         return count
 
@@ -380,7 +380,7 @@ class MongoQuery(object):
         logging.debug("| ${results} | Aggregate MongoDB Records | %s | %s |" % (dbName, dbCollName))
         return list(results)
 
-    def get_mongodb_collection_count_with_condition(self, dbName, dbCollName, conditionJSON):
+    def get_mongodb_collection_count_with_condition(self, dbName, dbCollName, conditionJSON = {}):
         """
         Returns the number records for the collection specified.
 
@@ -395,6 +395,6 @@ class MongoQuery(object):
         except TypeError:
             self._builtin.fail("Connection failed, please make sure you have run 'Connect To Mongodb' first.")
         coll = db['%s' % dbCollName]
-        count = coll.count(conditionJSON)
+        count = coll.count_documents(conditionJSON)
         logging.debug("| ${allResults} | Get MongoDB Collection Count | %s | %s |" % (dbName, dbCollName))
         return count
