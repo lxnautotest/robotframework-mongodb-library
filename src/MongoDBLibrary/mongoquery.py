@@ -312,6 +312,11 @@ class MongoQuery(object):
         dbName = str(dbName)
         dbCollName = str(dbCollName)
         criteria = dict(json.loads(recordJSON))
+
+        # handle _id column (ObjectId)
+        if '_id' in criteria:
+            criteria['_id'] = ObjectId(criteria['_id'])
+
         try:
             db = self._dbconnection['%s' % (dbName,)]
         except TypeError:
