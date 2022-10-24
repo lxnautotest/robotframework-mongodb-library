@@ -367,13 +367,15 @@ class MongoQuery(object):
         logging.debug("| ${allResults} | Remove MongoDB Records | %s | %s | %s |" % (dbName, dbCollName, recordJSON))
         return allResults
     
-    def aggregate_mongodb_records(self, dbName, dbCollName, aggregate_cond=[]):
+    def aggregate_mongodb_records(self, dbName, dbCollName, aggregate_cond=None):
         """
         Returns the aggregated results based on the aggregate_cond.
 
         Usage is:
         | ${results} | Aggregate MongoDB Records | DBName | CollectionName | Aggregate_cond |
         """
+        agg_cond = aggregate_cond or []
+        agg_cond = json.loads(agg_cond)
         dbName = str(dbName)
         dbCollName = str(dbCollName)
         try:
@@ -381,7 +383,8 @@ class MongoQuery(object):
         except TypeError:
             self._builtin.fail("Connection failed, please make sure you have run 'Connect To Mongodb' first.")
         coll = db['%s' % dbCollName]
-        results = coll.aggregate(aggregate_cond)
+        logging.debug(f"Aggregate_cond: {agg_cond}")
+        results = coll.aggregate(agg_cond)
         logging.debug("| ${results} | Aggregate MongoDB Records | %s | %s |" % (dbName, dbCollName))
         return list(results)
 
