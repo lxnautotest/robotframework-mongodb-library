@@ -114,6 +114,30 @@ class MongoQuery(object):
         logging.debug("| ${allResults} | Get MongoDB Collection Count | %s | %s |" % (dbName, dbCollName))
         return count
 
+    def insert_mongodb_record(self, dbName, dbCollName, recordJSON):
+        """ 
+        The pymongo's insert_one() operation is performed. 
+
+        | ${allResults} | Insert MongoDB Record | DBName | CollectionName | JSON |
+
+        Enter a new record usage is:
+        | ${inserted_id} | Insert MongoDB Record | foo | bar | {"timestamp":1, "msg":"Hello 1"} |
+        | Log | ${inserted_id} |
+        """
+        dbName = str(dbName)
+        dbCollName = str(dbCollName)
+        recordJSON = dict(json.loads(recordJSON))
+        if '_id' in recordJSON:
+            recordJSON['_id'] = ObjectId(recordJSON['_id'])
+        try:
+            db = self._dbconnection['%s' % (dbName,)]
+        except TypeError:
+            self._builtin.fail("Connection failed, please make sure you have run 'Connect To Mongodb' first.")
+        coll = db['%s' % dbCollName]
+        inserted = coll.insert_one(recordJSON)
+        logging.debug("| ${inserted.inserted_id} | Insert MongoDB Records | %s | %s | %s |" % (dbName, dbCollName, recordJSON))
+        return inserted.inserted_id
+
     def save_mongodb_records(self, dbName, dbCollName, recordJSON):
         """
         If to_save already has an "_id" then an update() (upsert) operation is 
