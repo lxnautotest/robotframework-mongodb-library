@@ -14,7 +14,7 @@ from version import VERSION
 requirements = [
     'tox~=3.25.1',
     'coverage',
-    'robotframework~=5.0',
+    'robotframework>=5.0',
     'pymongo~=4.1.1',
     # 'bson~=0.5.10' # removed due to: https://pymongo.readthedocs.io/en/stable/installation.html
 ]
