@@ -422,11 +422,12 @@ class MongoQuery(object):
         """
         dbName = str(dbName)
         dbCollName = str(dbCollName)
+        criteria = dict(json.loads(conditionJSON))
         try:
             db = self._dbconnection['%s' % (dbName,)]
         except TypeError:
             self._builtin.fail("Connection failed, please make sure you have run 'Connect To Mongodb' first.")
         coll = db['%s' % dbCollName]
-        count = coll.count_documents(conditionJSON)
+        count = coll.count_documents(criteria)
         logging.debug("| ${allResults} | Get MongoDB Collection Count | %s | %s |" % (dbName, dbCollName))
         return count
