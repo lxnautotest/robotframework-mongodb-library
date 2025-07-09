@@ -1,3 +1,4 @@
+import ast
 import json
 from bson.objectid import ObjectId
 from pymongo import ReturnDocument
@@ -7,6 +8,19 @@ class MongoQuery(object):
     """
     Query handles all the querying done by the MongoDB Library. 
     """
+    def pythonish_to_json_dict(text: str):
+        """
+        Converts a Python-style dict string (single quotes, etc.) into a JSON-compatible dict.
+        Uses ast.literal_eval for safe evaluation.
+        """
+        try:
+            # Step 1: Safely evaluate Python-style dict
+            obj = ast.literal_eval(text)
+
+            # Step 2: Serialize back to proper JSON
+            return json.loads(json.dumps(obj))  # Ensures valid JSON types
+        except Exception as e:
+            raise Exception(f"Error parsing pythonish to json dict: {e}")
 
     def get_mongodb_databases(self):
         """
@@ -335,7 +349,7 @@ class MongoQuery(object):
     def _retrieve_mongodb_records(self, dbName, dbCollName, recordJSON, fields=[], returnDocuments=False):
         dbName = str(dbName)
         dbCollName = str(dbCollName)
-        criteria = dict(json.loads(recordJSON))
+        criteria = self.pythonish_to_json_dict(recordJSON)
 
         # handle _id column (ObjectId)
         if '_id' in criteria:
