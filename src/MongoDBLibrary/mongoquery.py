@@ -8,7 +8,7 @@ class MongoQuery(object):
     """
     Query handles all the querying done by the MongoDB Library. 
     """
-    def pythonish_to_json_dict(text: str):
+    def pythonish_to_json_dict(self, text: str):
         """
         Converts a Python-style dict string (single quotes, etc.) into a JSON-compatible dict.
         Uses ast.literal_eval for safe evaluation.
