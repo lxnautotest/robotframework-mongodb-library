@@ -1,5 +1,6 @@
 import ast
 import json
+import re
 from bson.objectid import ObjectId
 from pymongo import ReturnDocument
 import logging
@@ -10,15 +11,24 @@ class MongoQuery(object):
     """
     def pythonish_to_json_dict(self, text: str):
         """
-        Converts a Python-style dict string (single quotes, etc.) into a JSON-compatible dict.
-        Uses ast.literal_eval for safe evaluation.
+        Parses a hybrid JSON/Python-style dict string into a valid Python dict.
+        Supports:
+        - Single-quoted keys and values
+        - Python strings with apostrophes
+        - JSON literals like false/null/true
         """
-        try:
-            # Step 1: Safely evaluate Python-style dict
-            obj = ast.literal_eval(text)
 
-            # Step 2: Serialize back to proper JSON
-            return json.loads(json.dumps(obj))  # Ensures valid JSON types
+        # Normalize JSON literals to Python ones for ast.literal_eval
+        fixed = text
+        fixed = re.sub(r'\bfalse\b', 'False', fixed, flags=re.IGNORECASE)
+        fixed = re.sub(r'\btrue\b', 'True', fixed, flags=re.IGNORECASE)
+        fixed = re.sub(r'\bnull\b', 'None', fixed, flags=re.IGNORECASE)
+
+        try:
+            # Try parsing with Python's safe literal parser
+            obj = ast.literal_eval(fixed)
+            # Convert back to JSON-safe dict (ensures proper types)
+            return json.loads(json.dumps(obj))
         except Exception as e:
             raise Exception(f"Error parsing pythonish to json dict: {e}")
 
